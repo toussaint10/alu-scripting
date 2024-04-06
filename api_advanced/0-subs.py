@@ -1,18 +1,17 @@
 #!/usr/bin/python3
-# get subs
-from requests import get
-from sys import argv
+''' task 0 module'''
+
+import requests
+import sys
 
 
 def number_of_subscribers(subreddit):
-    """subs"""
-    head = {'User-Agent': 'Dan Kazam'}
-    count = get('https://www.reddit.com/r/{}/about.json'.format(
-        subreddit), headers=head).json()
-    try:
-        return count.get('data').get('subscribers')
-    except:
-        return 0
+    '''gets num of subs of a subreddit'''
+    headers = {'User-agent': 'test'}
+    subs = requests.get('https://www.reddit.com/r/{}/about.json'.format(
+        sys.argv[1]), allow_redirects=False, headers=headers)
 
-if __name__ == "__main__":
-    number_of_subscribers(argv[1])
+    if subs.status_code == 200:
+        return (subs.json()['data']['subscribers'])
+    else:
+        return 0
